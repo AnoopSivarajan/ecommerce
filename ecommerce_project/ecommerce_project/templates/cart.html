@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    THIS IS THE CART PAGE
+{% endblock %}
+
+{% block title %}
+   CART
+{% endblock %}
+
+{% block content %}
+
+  {% if not cart_items %}
+    <div>
+      <div class="text-center"><br>
+        <h1 class="text-center my_title">
+          YOUR SHOPING CART IS EMPTY
+        </h1><br>
+        <p class="text-center">
+          PLEASE CLICK<a href="{% url 'shop_app:allProdCat' %}">HERE</a> TO CONTINUE SHOPPING
+       </p>
+
+      </div>
+    </div>
+  {% else %}
+    <div>
+      <div class="text-center">
+        <br>
+        <h1 class="text-center my_title">
+          YOUR SHOPPING CART
+        </h1>
+      </div>
+    </div>
+
+<div class="row mx-auto">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+    <table class="table my_custom_table">
+      <thead class="my_custom_thead">
+      <tr>
+        <th colspan="5">
+          YOUR ITEMS
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for cart_item in cart_items %}
+        <tr>
+          <td>
+            <a href="{{cart_item.product.get_absolute_url}}"><img src="{{cart_item.product.image.url}}" alt="image" style="width:100px; height:100px;"></a>
+          </td>
+          <td class="text-lef">
+            {{cart_item.product.name}}
+            <br>
+            SKU: {{cart_item.product.id}}
+            <br>
+            Price: $ {{cart_item.product.price}}
+            <br>
+            Qty: {{cart_item.quantity}} x $ {{cart_item.product.price}}
+
+          </td>
+          <td>
+            $ {{cart_item.sub_total}}
+          </td>
+          {% if cart_item.quantity < cart_item.product.stock %}
+          <td>
+            <a href="{% url 'cart:add_cart' cart_item.product.id %}" class="custom_a"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+</svg></a>&nbsp;
+            <a href="{% url 'cart:cart_remove' cart_item.product.id %}" class="custom_a"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
+</svg></a>&nbsp;
+            <a href="{% url 'cart:full_remove' cart_item.product.id %}" class="custom_icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+</svg></a>
+          </td>
+          {% else %}
+          <td>
+          &nbsp;<a href="{% url 'cart:cart_remove' cart_item.product.id %}" class="custom_a"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
+</svg></a>&nbsp;
+            <a href="{% url 'cart:full_remove' cart_item.product.id %}" class="custom_icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+</svg></a>
+          </td>
+        </tr>
+      {% endif %}
+         {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+      <table class="table my_custom_table">
+        <thead class="my_custom_thead">
+          <tr>
+            <th>
+              CHECKOUT
+            </th>
+          </tr>
+
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              PLEASE REVIEW YOUR CART BEFORE PROCEEDING TO PAYMENT
+            </td>
+          </tr>
+        <tr>
+          <td class="text-left">
+                TOTAL: <strong>{{ total }}</strong>
+          </td>
+        </tr>
+
+        </tbody>
+
+      </table>
+      <div class="mx-auto">
+        <a href="{% url 'shop_app:allProdCat' %}" class="btn btn-secondary btn-block my_custom_button">continue shopping</a>
+
+      </div>
+    </div>
+
+
+
+</div>
+
+{% endif %}
+{% endblock %}

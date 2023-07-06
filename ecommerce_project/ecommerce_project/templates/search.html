@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div>
+    <p class="text-center my_search">YOU HAVE SEARCHED FOR <b>{{ query }}</b></p>
+  </div>
+
+  <div class="container">
+    <div class="row mx-auto">
+      {% if products %}
+        {% for product in products %}
+          <div class="bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width: 18rem; height: 100%;">
+              <a href="{{ product.get_url }}"><img class="card-img-top my_image" src="{{ product.image.url }}" alt="{{ product.name }}"></a><br><br>
+              <div class="card-body">
+                <h4>{{ product.name }}</h4>
+                <p>{{ product.price }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="row mx-auto">
+          <p class="text-center my_search">NO RESULTS FOUND</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
